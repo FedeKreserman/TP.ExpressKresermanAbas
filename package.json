@@ -1,5 +1,26 @@
 {
+  "name": "tp.express",
+  "version": "1.0.0",
+  "description": "\"# TP.ExpressKresermanAbas\"",
+  "homepage": "https://github.com/FedeKreserman/TP.ExpressKresermanAbas#readme",
+  "bugs": {
+    "url": "https://github.com/FedeKreserman/TP.ExpressKresermanAbas/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FedeKreserman/TP.ExpressKresermanAbas.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
+    "axios": "^1.14.0",
+    "cors": "^2.8.6",
     "express": "^5.2.1"
-  }
+  },
+  "devDependencies": {}
 }
