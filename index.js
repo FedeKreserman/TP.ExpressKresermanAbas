@@ -100,3 +100,7 @@ app.get('/matematica/dividi?n1={numero}&n2={numero}',(req,res)=>{
 });
 
 
+app.get('/omdb/searchbypage?search={texto}&p={pagina}',(req,res)=>{
+
+    res.status(200).send(`Resultado: ${resultado}`);
+});
