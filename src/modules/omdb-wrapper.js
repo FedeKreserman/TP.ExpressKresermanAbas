@@ -28,13 +28,15 @@ const OMDBSearchByPage = async (searchText, page = 1) => {
 
     return returnObject;
 };
-
 const OMDBSearchComplete = async (searchText) => {
     let returnObject = {
         respuesta: false,
         cantidadTotal: 0,
         datos: []
     };
+
+    return returnObject;
+};
 
     try {
         let page = 1;
@@ -66,7 +68,7 @@ const OMDBSearchComplete = async (searchText) => {
 
 
     return returnObject;
-};
+;
 
 const OMDBGetByImdbID = async (imdbID) => {
     let returnObject = {

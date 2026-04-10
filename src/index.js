@@ -27,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.get("/saludar", (req, res) => {
   res.send("Hello World!");
+  console.log("dfghjk")
   // EndPoint "/saludar"
 });
 // Inicio el Server y lo pongo a escuchar.
@@ -45,17 +46,20 @@ app.get("/saludar/:nombre", (req, res) => {
   res.status(200).send(`Hola ${nombre}!`);
 });
 
-app.get("/validarfecha/:ano/:mes/:dia", (req, res) => {
+pp.get("/validarfecha/:ano/:mes/:dia", (req, res) => {
   const { ano, mes, dia } = req.params;
 
-  const fechaString = `${ano}-${mes}-${dia}`;
-  const fecha = Date.parse(fechaString);
+  const fecha = new Date(ano, mes - 1, dia);
 
-  if (isNaN(fecha)) {
-    res.status(400).send("Fecha inválida");
-  } else {
-    res.status(200).send("Fecha válida");
+  if (
+    fecha.getFullYear() != ano ||
+    fecha.getMonth() != mes - 1 ||
+    fecha.getDate() != dia
+  ) {
+    return res.status(400).send("Fecha inválida");
   }
+
+  res.status(200).send("Fecha válida");
 });
 
 app.get("/matematica/sumar", (req, res) => {
@@ -105,4 +109,14 @@ app.get("/omdb-wrapper/searchbypage", async (req, res) => {
   }
 });
 
-app.get("/ondb-wrapper/")
+app.get("/omdb-wrapper/searchcomplete", async (req, res) => {
+  const { search, p } = req.query;
+
+  try {
+    const resultado = await OMDBSearchByPage(search, p);
+
+    res.status(200).json(resultado || []);
+  } catch (error) {
+    res.status(500).json({ error: "Error al buscar películas" });
+  }
+});
