@@ -93,5 +93,16 @@ app.get("/matematica/dividir", (req, res) => {
   res.status(200).send(`Resultado: ${resultado}`);
 });
 
-app.get("/omdb/dividir", (req, res) =>
+app.get("/omdb-wrapper/searchbypage", async (req, res) => {
+  const { search, p } = req.query;
 
+  try {
+    const resultado = await OMDBSearchByPage(search, p);
+
+    res.status(200).json(resultado || []);
+  } catch (error) {
+    res.status(500).json({ error: "Error al buscar películas" });
+  }
+});
+
+app.get("/ondb-wrapper/")
