@@ -1,4 +1,4 @@
-import Alumno from "./models/alumno.js";
+import Alumno from "./models/alumnos.js";
 
 import { sumar, restar, multiplicar, dividir } from "./modules/matematica.js";
 
@@ -46,7 +46,7 @@ app.get("/saludar/:nombre", (req, res) => {
   res.status(200).send(`Hola ${nombre}!`);
 });
 
-pp.get("/validarfecha/:ano/:mes/:dia", (req, res) => {
+app.get("/validarfecha/:ano/:mes/:dia", (req, res) => {
   const { ano, mes, dia } = req.params;
 
   const fecha = new Date(ano, mes - 1, dia);
@@ -97,6 +97,10 @@ app.get("/matematica/dividir", (req, res) => {
   res.status(200).send(`Resultado: ${resultado}`);
 });
 
+
+
+
+
 app.get("/omdb-wrapper/searchbypage", async (req, res) => {
   const { search, p } = req.query;
 
@@ -109,14 +113,85 @@ app.get("/omdb-wrapper/searchbypage", async (req, res) => {
   }
 });
 
-app.get("/omdb-wrapper/searchcomplete", async (req, res) => {
+
+
+
+
+
+app.get("/omdb-wrapper/Searchcomplete", async (req, res) => {
   const { search, p } = req.query;
 
   try {
-    const resultado = await OMDBSearchByPage(search, p);
+    const resultado = await OMDBSearchComplete(search, p);
 
     res.status(200).json(resultado || []);
   } catch (error) {
     res.status(500).json({ error: "Error al buscar películas" });
   }
+});
+
+
+const alumnosArray = [];
+
+alumnosArray.push(new Alumno("Esteban Dido", "22888444", 20));
+alumnosArray.push(new Alumno("Matias Queroso", "28946255", 51));
+alumnosArray.push(new Alumno("Elba Calao", "32623391", 18));
+
+app.get("/alumnos", (req, res) => {
+  res.status(200).json(alumnosArray);
+});
+
+
+
+
+
+app.get("/alumnos/:dni", (req, res) => {
+  const { dni } = req.params;
+
+  const alumno = alumnosArray.find(a => a.dni === dni);
+
+  if (!alumno) {
+    return res.status(404).send("Alumno no existe");
+  }
+
+  res.status(200).json(alumno);
+});
+
+
+
+app.post("/alumnos", (req, res) => {
+  const { username, dni, edad } = req.body;
+
+  if (!username || !dni || !edad) {
+    return res.status(400).json({ error: "Faltan datos" });
+  }
+
+  const existe = alumnosArray.find(a => a.dni === dni);
+
+  if (existe) {
+    return res.status(400).json({ error: "El alumno ya existe" });
+  }
+
+  const nuevoAlumno = new Alumno(username, dni, edad);
+
+  alumnosArray.push(nuevoAlumno);
+
+  res.status(201).json(nuevoAlumno);
+});
+
+
+
+
+app.delete("/alumnos/:dni", (req, res) => {
+  const { dni } = req.params;
+
+  const alumnoAEliminar = alumnosArray.findIndex(a => a.dni === dni);
+
+  if (alumnoAEliminar === -1) {
+    return res.status(404).json({ error: "Alumno no existe" });
+  }
+
+  const eliminado = alumnosArray.splice(alumnoAEliminar, 1);
+
+  res.status(200).json(eliminado[0]);
 });
